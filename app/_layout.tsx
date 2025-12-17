@@ -1,7 +1,30 @@
+import { useEffect } from 'react';
+import { Stack } from 'expo-router';
+import { useFonts, Nunito_400Regular, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import * as SplashScreen from 'expo-splash-screen';
 import '../global.css';
 
-import { Stack } from 'expo-router';
+SplashScreen.preventAutoHideAsync();
 
-export default function Layout() {
-  return <Stack />;
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Nunito_400Regular,
+    Nunito_700Bold,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+    </Stack>
+  );
 }
